@@ -11,4 +11,8 @@ sys_root="$4"
 
 cd "${dst_root}/Daedalus.app/Contents/MacOS/"
 
-bash ./build-certificates-unix.sh
+cardano-x509-certificates \
+  --server-out-dir tls/server \
+  --clients-out-dir tls/client \
+  --configuration-key prod \
+  --configuration-file config/configuration.yaml

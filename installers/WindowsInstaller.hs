@@ -102,6 +102,9 @@ fileSubstString :: Text -> Text -> FilePath -> FilePath -> IO ()
 fileSubstString from to src dst =
     TIO.writeFile (encodeString dst) =<< T.replace from to <$> TIO.readFile (encodeString src)
 
+-- constantText :: String -> Text -> _nsis ()
+constantText c = void . constantStr c . str . T.unpack
+
 writeInstallerNSIS :: FilePath -> Version -> Cluster -> IO ()
 writeInstallerNSIS outName (Version fullVersion') clusterName = do
     tempDir <- getTempDir
@@ -113,8 +116,9 @@ writeInstallerNSIS outName (Version fullVersion') clusterName = do
         \f-> fileSubstString "OPENSSL_MD" "sha256" f (f <.> "windows")
 
     writeFile "daedalus.nsi" $ nsis $ do
-        _ <- constantStr "Version" (str fullVersion)
-        _ <- constantStr "Cluster" (str $ unpack $ lshowText clusterName)
+        constantText "Version" fullVersion'
+        constantText "Cluster" (lshowText clusterName)
+        constantText "CONFIGKEY" "prod"
         name "Daedalus ($Version)"                  -- The name of the installer
         outFile $ str $ encodeString outName        -- Where to produce the installer
         unsafeInjectGlobal $ "!define MUI_ICON \"icons\\64x64.ico\""
@@ -144,6 +148,7 @@ writeInstallerNSIS outName (Version fullVersion') clusterName = do
                 createDirectory "$APPDATA\\Daedalus\\Logs\\pub"
                 file [] "cardano-node.exe"
                 file [] "cardano-launcher.exe"
+                file [] "cardano-x509-certificates.exe"
                 file [] "log-config-prod.yaml"
                 file [] "build-certificates-win64.bat"
                 file [] "ca.conf.windows"
@@ -163,7 +168,7 @@ writeInstallerNSIS outName (Version fullVersion') clusterName = do
                     , "DetailPrint \"liteFirewall::AddRule: $0\""
                     ]
 
-                execWait "build-certificates-win64.bat \"$INSTDIR\" >\"%APPDATA%\\Daedalus\\Logs\\build-certificates.log\" 2>&1"
+                execWait "cardano-x509-certificates --server-out-dir \"$INSTDIR\\tls\\server\" --clients-out-dir \"$INSTDIR\\tls\\client\" --configuration-key $CONFIGKEY --configuration-file configuration.yaml  >\"%APPDATA%\\Daedalus\\Logs\\build-certificates.log\" 2>&1"
 
                 createShortcut "$DESKTOP\\Daedalus.lnk" daedalusShortcut
 

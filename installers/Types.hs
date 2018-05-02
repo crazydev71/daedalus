@@ -49,6 +49,7 @@ data OS
 data Cluster
   = Mainnet
   | Staging
+  | Testnet
   deriving (Bounded, Enum, Eq, Read, Show)
 
 data Config

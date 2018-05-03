@@ -14,7 +14,7 @@ nix-build default.nix -A rawapp.deps -o node_modules.root -Q
 for cluster in ${CLUSTERS}
 do
   echo '~~~ Building '${cluster}' installer'
-  nix-build release.nix -A ${cluster}.installer --argstr buildNr $BUILDKITE_BUILD_NUMBER
+  nix-build -Q release.nix -A ${cluster}.installer --argstr buildNr $BUILDKITE_BUILD_NUMBER
   if [ -n "${BUILDKITE_JOB_ID:-}" ]; then
     buildkite-agent artifact upload result/daedalus*.bin --job $BUILDKITE_JOB_ID
     nix-build -A daedalus.cfg ./default.nix

@@ -67,8 +67,6 @@ makeTestInstallersDir = do
   let installersDir = src </> "installers"
   mkdir installersDir
   cptree "dhall" (installersDir </> "dhall")
-  forM ["ca.conf", "server.conf", "client.conf", "build-certificates-unix.sh"] $ \f ->
-    cp f (installersDir </> f)
   mktree (installersDir </> "data/scripts")
   pure installersDir
 

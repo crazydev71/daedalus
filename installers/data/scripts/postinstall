@@ -8,11 +8,3 @@ dst_mount="$3"
 sys_root="$4"
 
 ./dockutil --add "${dst_root}/Daedalus.app" --allhomes
-
-cd "${dst_root}/Daedalus.app/Contents/MacOS/"
-
-./cardano-x509-certificates                     \
-    --server-out-dir tls/server                 \
-    --clients-out-dir tls/client                \
-    --configuration-key prod                    \
-    --configuration-file configuration.yaml

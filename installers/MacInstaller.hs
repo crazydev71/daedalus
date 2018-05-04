@@ -20,27 +20,23 @@ module MacInstaller
 --- An overview of Mac .pkg internals:    http://www.peachpit.com/articles/article.aspx?p=605381&seqNum=2
 ---
 
-import           Universum                 hiding (FilePath, toText, (<>))
+import           Universum hiding (FilePath, toText, (<>))
 
-import           Control.Exception         (handle)
 import           Control.Monad             (unless)
+import           Control.Exception         (handle)
 import           Data.Text                 (Text)
 import qualified Data.Text                 as T
-
-import           Filesystem.Path           (FilePath, dropExtension, (<.>),
-                                            (</>))
+import           Filesystem.Path           (FilePath, dropExtension, (</>), (<.>))
 import           Filesystem.Path.CurrentOS (encodeString)
 import           System.FilePath.Glob      (glob)
-import           Turtle                    hiding (e, prefix, stdout)
+import           Turtle                    hiding (stdout, prefix, e)
 import           Turtle.Line               (unsafeTextToLine)
-
-import           RewriteLibs               (chain)
-
 import           System.IO                 (BufferMode (NoBuffering),
                                             hSetBuffering)
 import           System.IO.Error           (IOError, isDoesNotExistError)
 
 import           Config
+import           RewriteLibs               (chain)
 import           Types
 
 
@@ -126,12 +122,6 @@ makeComponentRoot Options{..} appRoot = do
       cp "launcher-config.yaml" (dir </> "launcher-config.yaml")
       cp "wallet-topology.yaml" (dir </> "wallet-topology.yaml")
 
-      -- SSL
-      cp "build-certificates-unix.sh" (dir </> "build-certificates-unix.sh")
-      cp "ca.conf"     (dir </> "ca.conf")
-      cp "server.conf" (dir </> "server.conf")
-      cp "client.conf" (dir </> "client.conf")
-
       procs "chmod" ["-R", "+w", tt dir] empty
 
       -- Rewrite libs paths and bundle them
@@ -161,7 +151,6 @@ makeInstaller opts@Options{..} componentRoot pkg = do
       pkgargs =
            [ "--identifier"
            , "org."<> fromAppName oAppName <>".pkg"
-           -- data/scripts/postinstall is responsible for running build-certificates
            , "--scripts", scriptsDir
            , "--component"
            , tt componentRoot

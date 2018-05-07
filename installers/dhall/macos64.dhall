@@ -20,6 +20,7 @@ in
 
   , walletPath          = "./Frontend"
   , walletLogging       = True
+  , frontendOnlyMode    = True
 
   , updaterPath         = "/usr/bin/open"
   , updaterArgs         = ["-FW"]

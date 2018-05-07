@@ -20,6 +20,7 @@ in
 
   , walletPath          = "\${DAEDALUS_DIR}\\Daedalus.exe"
   , walletLogging       = False
+  , frontendOnlyMode    = False
 
   , updaterPath         = "${dataDir}\\Installer.exe"
   , updaterArgs         = [] : List Text

@@ -9,10 +9,12 @@
 , nodeTimeoutSec = 60
 , reportServer   = cluster.reportServer
 , walletArgs     = [] : List Text
+, tlsPath        = os.nodeArgs.tlsPath
+, x509ToolPath   = os.x509ToolPath
 , nodeArgs =
-    [ "--tlsca",               "tls/ca/ca.crt"
-    , "--tlscert",             "tls/server/server.crt"
-    , "--tlskey",              "tls/server/server.key"
+    [ "--tlsca",               "${os.nodeArgs.tlsPath}/ca.crt"
+    , "--tlscert",             "${os.nodeArgs.tlsPath}/server.crt"
+    , "--tlskey",              "${os.nodeArgs.tlsPath}/server.key"
     , "--update-server",       cluster.updateServer
     , "--keyfile",             os.nodeArgs.keyfile
     , "--logs-prefix",         os.nodeArgs.logsPrefix

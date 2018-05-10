@@ -1,14 +1,16 @@
 \(cluster : ./cluster.type)      ->
-let dataDir = "\${XDG_DATA_HOME}/Daedalus/"
+let dataDir = "\${XDG_DATA_HOME}/Daedalus"
 in
 { name      = "linux64"
 , configurationYaml  = "\${DAEDALUS_CONFIG}/configuration.yaml"
+, x509ToolPath       = "cardano-x509-certificates"
 , nodeArgs           =
   { keyfile          = "Secrets/secret.key"
   , logsPrefix       = "Logs"
   , topology         = "\${DAEDALUS_CONFIG}/wallet-topology.yaml"
   , updateLatestPath = "${dataDir}/${cluster.name}/installer.sh"
   , walletDBPath     = "Wallet/"
+  , tlsPath          = "${dataDir}/${cluster.name}/tls"
   }
 , pass      =
   { nodePath            = "cardano-node"

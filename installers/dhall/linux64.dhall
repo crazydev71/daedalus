@@ -5,16 +5,16 @@ in
 , configurationYaml  = "\${DAEDALUS_CONFIG}/configuration.yaml"
 , x509ToolPath       = "cardano-x509-certificates"
 , nodeArgs           =
-  { keyfile          = "Secrets/secret.key"
-  , logsPrefix       = "Logs"
+  { keyfile          = "${dataDir}/${cluster.name}/Secrets/secret.key"
+  , logsPrefix       = "${dataDir}/${cluster.name}/Logs"
   , topology         = "\${DAEDALUS_CONFIG}/wallet-topology.yaml"
   , updateLatestPath = "${dataDir}/${cluster.name}/installer.sh"
-  , walletDBPath     = "Wallet/"
+  , walletDBPath     = "${dataDir}/${cluster.name}/Wallet/"
   , tlsPath          = "${dataDir}/${cluster.name}/tls"
   }
 , pass      =
   { nodePath            = "cardano-node"
-  , nodeDbPath          = "DB/"
+  , nodeDbPath          = "${dataDir}/${cluster.name}/DB/"
   , nodeLogConfig       = "\${DAEDALUS_CONFIG}/daedalus.yaml"
   , nodeLogPath         = "${dataDir}/${cluster.name}/Logs/cardano-node.log"
 

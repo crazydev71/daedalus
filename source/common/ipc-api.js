@@ -29,3 +29,7 @@ export const DOWNLOAD_LOGS = {
   REQUEST: DOWNLOAD_LOGS_CHANNEL,
   SUCCESS: `${DOWNLOAD_LOGS_CHANNEL}-success`,
 };
+const UPDATE_API_CHANNEL = "update-api";
+export const UPDATE_API = {
+  REQUEST: UPDATE_API_CHANNEL
+};

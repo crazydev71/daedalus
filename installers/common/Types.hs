@@ -98,6 +98,7 @@ tt = format fp
 clusterNetwork :: Cluster -> Text
 clusterNetwork Mainnet = "mainnet"
 clusterNetwork Staging = "testnet"
+clusterNetwork Testnet = "testnet"
 
 packageFileName :: OS -> Cluster -> Version -> Text -> Maybe BuildJob -> FilePath
 packageFileName os cluster ver backend build = fromText (mconcat name) <.> ext
